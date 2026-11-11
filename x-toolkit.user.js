@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.0
+// @version      1.1
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -1288,7 +1288,16 @@
     like: ['[data-engagement-action="like"]'],
     bookmark: ['[data-engagement-action="bookmark"]'],
     share: ['[data-engagement-action="share"]'],
-    generic: ['[data-engagement-action="generic"]'] // view count
+    // View count is an <a href=".../analytics"> carrying the #icon-bar-chart
+    // sprite (its aria-label "查看統計"/"View analytics" is localized). The
+    // data-engagement-action="generic" marker is NOT reliably on it (only 1 of N
+    // posts in the saved DOM), so key off the language-independent href suffix and
+    // the sprite instead.
+    generic: [
+      'a[href$="/analytics"]',
+      'a.x-engagement-button:has(use[href="#icon-bar-chart"])',
+      '[data-engagement-action="generic"]'
+    ]
   };
 
   // Legacy (pre-2026) fallbacks kept for older cached pages / other clients.
