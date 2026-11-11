@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.1
+// @version      1.2
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -897,13 +897,20 @@
     });
   };
 
-  // Click a real user-ish element (pointer + click) so React handlers fire.
+  // Click a real user-ish element so React / Base UI handlers fire. Base UI menus
+  // (which X uses) often key off pointer events, so dispatch the full
+  // pointer -> mouse -> click sequence, not just mouse events.
   TK.realClick = function (el) {
     if (!el) return false;
     try {
-      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true, cancelable: true, view: window }));
-      el.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, cancelable: true, view: window }));
-      el.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, cancelable: true, view: window }));
+      const opts = { bubbles: true, cancelable: true, view: window };
+      if (typeof PointerEvent === 'function') {
+        const p = (type, extra) => el.dispatchEvent(new PointerEvent(type, Object.assign({ pointerId: 1, pointerType: 'mouse', isPrimary: true, button: 0 }, opts, extra || {})));
+        p('pointerover'); p('pointerenter'); p('pointerdown'); p('pointerup'); p('pointerout');
+      }
+      el.dispatchEvent(new MouseEvent('mouseover', opts));
+      el.dispatchEvent(new MouseEvent('mousedown', opts));
+      el.dispatchEvent(new MouseEvent('mouseup', opts));
       el.click();
       return true;
     } catch (e) {
@@ -1717,32 +1724,50 @@
 
   // Menu items that open a destructive confirmation.
   function findBlockMenuItem() {
+    // Only consider elements that are actually on screen (X pre-renders closed
+    // dropdowns with zero layout rects; clicking those does nothing).
+    const visible = (el) => el && el.getClientRects().length > 0 &&
+      !el.closest('[aria-hidden="true"]') && !el.closest('[hidden]');
+    // Prefer a live, visible menu item that is itself the clickable control.
     const items = document.querySelectorAll(
-      '[role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], li [role="button"], li button, [data-testid="Dropdown"]'
+      '[role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], li [role="button"], li button'
     );
     for (const el of items) {
+      if (!visible(el)) continue;
       const t = (el.textContent || '').trim();
-      if (!t) continue;
-      if (TK.matchesLabel(t, 'block')) return el;
+      if (t && TK.matchesLabel(t, 'block')) return el;
     }
-    // Structural fallback: any element whose localized text looks like "Block @".
+    // Fallback: any visible element whose localized text looks like "Block @user".
+    // Return its clickable ancestor so the synthetic click actually fires.
     const all = document.querySelectorAll('div, span, button, li');
     for (const el of all) {
+      if (!visible(el)) continue;
       const t = (el.textContent || '').trim();
-      if (t.length < 60 && TK.matchesLabel(t, 'block')) return el;
+      if (t.length < 60 && TK.matchesLabel(t, 'block')) {
+        return el.closest('[role="menuitem"], [role="menuitemradio"], [role="menuitemcheckbox"], button, [role="button"], a') || el;
+      }
     }
     return null;
   }
 
   function findConfirmButton() {
-    const scope = document.querySelector('[role="alertdialog"]') ||
+    const dialog = document.querySelector('[role="alertdialog"]') ||
       document.querySelector('[role="dialog"]') ||
-      document.querySelector('[data-testid="confirmationSheet"]') ||
-      document;
-    const buttons = scope.querySelectorAll('button');
-    for (const b of buttons) {
-      const t = (b.textContent || '').trim();
-      if (t && TK.matchesLabel(t, 'confirmBlock')) return b;
+      document.querySelector('[data-testid="confirmationSheet"]');
+    const scope = dialog || document;
+    // Newer builds label the destructive button "Block @user" (with the handle)
+    // and sometimes expose the name via aria-label. Inside a dialog we strip a
+    // trailing "@handle" and also read aria-label so the exact-verb matcher still
+    // hits. Outside a dialog we stay strict (raw text only) so a still-open
+    // "Block @user" menu item is never mistaken for the confirm button.
+    const norm = (s) => (s || '').replace(/\s*@[A-Za-z0-9_]+.*$/, '').trim();
+    const controls = scope.querySelectorAll('button, [role="button"]');
+    for (const b of controls) {
+      const raw = (b.textContent || '').trim();
+      const al = (b.getAttribute('aria-label') || '').trim();
+      const t = dialog ? norm(raw) : raw;
+      const a = dialog ? norm(al) : al;
+      if ((t && TK.matchesLabel(t, 'confirmBlock')) || (a && TK.matchesLabel(a, 'confirmBlock'))) return b;
     }
     const legacy = document.querySelector('button[data-testid="confirmationSheetConfirm"]');
     if (legacy) return legacy;
