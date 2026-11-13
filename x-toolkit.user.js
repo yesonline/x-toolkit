@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.3
+// @version      1.3.1
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -2180,32 +2180,49 @@
     const seenImg = new Set();
     const seenVid = new Set();
 
-    article.querySelectorAll('img[src]').forEach((img) => {
+    article.querySelectorAll('img').forEach((img) => {
+      // 2026 DOM: the canonical media URL lives in the <img> srcset (the src
+      // attribute is a lazy/placeholder or a single size). Collect every pbs
+      // URL from BOTH src and srcset, then classify and de-duplicate by media
+      // id (srcset lists the same id at small/medium/large, so without id-based
+      // de-dup we would download the same image three times).
+      const raws = [];
       const src = img.getAttribute('src') || '';
-      if (!/pbs\.twimg\.com\/(media|ext_tw_video_thumb|amplify_video_thumb|amplify_tw_video_thumb|tweet_video_thumb)\//.test(src)) return;
-      // Skip avatars.
-      if (src.includes('/profile_images/')) return;
+      if (src) raws.push(src);
+      const srcset = img.getAttribute('srcset') || '';
+      if (srcset) srcset.split(',').forEach((part) => {
+        const u = part.trim().split(/\s+/)[0];
+        if (u) raws.push(u);
+      });
 
-      const thumb = src.match(/\/(ext_tw_video_thumb|amplify_video_thumb|amplify_tw_video_thumb|tweet_video_thumb)\//);
-      if (thumb) {
-        // The <video> element and its thumbnail <img> describe the SAME media,
-        // so they are collapsed onto one media id.
-        const key = TK.X.mediaIdOf(src) || src;
-        if (seenVid.has(key)) return;
-        seenVid.add(key);
-        const ownerId = ownerIdOf(img, article);
-        if (thumb[1] === 'tweet_video_thumb') {
-          const g = gifUrlFromThumb(src);
-          if (g) gifs.push({ url: g, typeLabel: 'gif', ext: 'mp4', ownerId: ownerId });
-        } else {
-          videos.push({ poster: src, typeLabel: 'video', ext: 'mp4', needApi: true, ownerId: ownerId });
+      const PBS = /pbs\.twimg\.com\/(media|ext_tw_video_thumb|amplify_video_thumb|amplify_tw_video_thumb|tweet_video_thumb)\//;
+      for (const url of raws) {
+        if (!PBS.test(url)) continue;
+        // Skip avatars.
+        if (url.includes('/profile_images/')) continue;
+
+        const thumb = url.match(/\/(ext_tw_video_thumb|amplify_video_thumb|amplify_tw_video_thumb|tweet_video_thumb)\//);
+        if (thumb) {
+          // The <video> element and its thumbnail <img> describe the SAME media,
+          // so they are collapsed onto one media id.
+          const key = TK.X.mediaIdOf(url) || url;
+          if (seenVid.has(key)) continue;
+          seenVid.add(key);
+          const ownerId = ownerIdOf(img, article);
+          if (thumb[1] === 'tweet_video_thumb') {
+            const g = gifUrlFromThumb(url);
+            if (g) gifs.push({ url: g, typeLabel: 'gif', ext: 'mp4', ownerId: ownerId });
+          } else {
+            videos.push({ poster: url, typeLabel: 'video', ext: 'mp4', needApi: true, ownerId: ownerId });
+          }
+          continue;
         }
-        return;
-      }
 
-      if (seenImg.has(src)) return;
-      seenImg.add(src);
-      images.push({ url: upgradeImage(src), typeLabel: 'img', ext: extFromUrl(src, 'jpg'), ownerId: ownerIdOf(img, article) });
+        const mid = (url.match(/pbs\.twimg\.com\/media\/([^?/]+)/) || [])[1] || url;
+        if (seenImg.has(mid)) continue;
+        seenImg.add(mid);
+        images.push({ url: upgradeImage(url), typeLabel: 'img', ext: extFromUrl(url, 'jpg'), ownerId: ownerIdOf(img, article) });
+      }
     });
 
     article.querySelectorAll('video').forEach((v) => {
