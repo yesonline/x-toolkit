@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.3.1
+// @version      1.3.2
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -2140,11 +2140,13 @@
 
   // --------------------------------------------------------------- media io
   function upgradeImage(src) {
-    // pbs.twimg.com/media/<id>?format=webp&name=large -> .../name=orig
-    let out = src;
-    out = out.replace(/&name=[a-z0-9]+/i, '&name=orig');
-    if (!/name=orig/i.test(out)) out += (out.includes('?') ? '&' : '?') + 'name=orig';
-    return out;
+    // 2026 DOM serves images as format=webp, but webp has NO name=orig variant
+    // (pbs.twimg.com/media/<id>?format=webp&name=orig returns HTTP 404). The
+    // original full-resolution asset is only reachable as format=jpg&name=orig,
+    // so normalise every pbs media URL to that canonical form.
+    const m = String(src).match(/pbs\.twimg\.com\/media\/([^?/]+)/);
+    if (m) return 'https://pbs.twimg.com/media/' + m[1] + '?format=jpg&name=orig';
+    return src;
   }
 
   function extFromUrl(url, fallback) {
@@ -2221,7 +2223,7 @@
         const mid = (url.match(/pbs\.twimg\.com\/media\/([^?/]+)/) || [])[1] || url;
         if (seenImg.has(mid)) continue;
         seenImg.add(mid);
-        images.push({ url: upgradeImage(url), typeLabel: 'img', ext: extFromUrl(url, 'jpg'), ownerId: ownerIdOf(img, article) });
+        images.push({ url: upgradeImage(url), typeLabel: 'img', ext: 'jpg', ownerId: ownerIdOf(img, article) });
       }
     });
 
@@ -2544,13 +2546,30 @@
 
   function imgToMarkdown(img) {
     if (isEmojiImg(img)) return img.getAttribute('alt') || '';
-    let src = img.getAttribute('src') || '';
-    if (!src || src.startsWith('data:')) return '';
-    if (src.includes('/profile_images/')) return '';
-    src = src.replace(/&name=[a-z0-9]+/i, '&name=orig');
-    if (!/name=orig/i.test(src)) src += (src.includes('?') ? '&' : '?') + 'name=orig';
+    // 2026 DOM: the canonical media URL lives in srcset (the src attribute can
+    // be a lazy placeholder), and webp has no name=orig (that 404s). Find the
+    // pbs media URL from src or srcset and normalise it to format=jpg&name=orig.
+    const raws = [];
+    const src = img.getAttribute('src') || '';
+    if (src) raws.push(src);
+    const srcset = img.getAttribute('srcset') || '';
+    if (srcset) srcset.split(',').forEach((part) => {
+      const u = part.trim().split(/\s+/)[0];
+      if (u) raws.push(u);
+    });
+    let media = '';
+    for (const u of raws) { if (/pbs\.twimg\.com\/media\//.test(u)) { media = u; break; } }
     const alt = (img.getAttribute('alt') || '').trim() || 'image';
-    return '![' + alt + '](' + src + ')';
+
+    if (media) {
+      const mid = (media.match(/pbs\.twimg\.com\/media\/([^?/]+)/) || [])[1];
+      return '![' + alt + '](https://pbs.twimg.com/media/' + mid + '?format=jpg&name=orig)';
+    }
+    // Not a pbs media image (avatar, data URI, other host) -> keep prior behaviour.
+    if (!src || src.startsWith('data:') || src.includes('/profile_images/')) return '';
+    let s = src.replace(/&name=[a-z0-9]+/i, '&name=orig');
+    if (!/name=orig/i.test(s)) s += (s.includes('?') ? '&' : '?') + 'name=orig';
+    return '![' + alt + '](' + s + ')';
   }
 
   function linkToMarkdown(a) {
@@ -2586,13 +2605,26 @@
   function collectMedia(article) {
     const images = [];
     const seen = new Set();
-    article.querySelectorAll('img[src]').forEach((img) => {
-      const src = img.getAttribute('src') || '';
-      if (!/pbs\.twimg\.com\/media\//.test(src)) return;
-      if (src.includes('/profile_images/')) return;
+    // 2026 DOM: media URL may only be in srcset, so scan every <img> and detect
+    // a pbs media URL from src or srcset; de-duplicate by media id.
+    article.querySelectorAll('img').forEach((img) => {
       if (isEmojiImg(img)) return;
-      if (seen.has(src)) return;
-      seen.add(src);
+      const raws = [];
+      const src = img.getAttribute('src') || '';
+      if (src) raws.push(src);
+      const srcset = img.getAttribute('srcset') || '';
+      if (srcset) srcset.split(',').forEach((part) => {
+        const u = part.trim().split(/\s+/)[0];
+        if (u) raws.push(u);
+      });
+      let media = '';
+      for (const u of raws) {
+        if (/pbs\.twimg\.com\/media\//.test(u) && !u.includes('/profile_images/')) { media = u; break; }
+      }
+      if (!media) return;
+      const mid = (media.match(/pbs\.twimg\.com\/media\/([^?/]+)/) || [])[1] || media;
+      if (seen.has(mid)) return;
+      seen.add(mid);
       images.push(imgToMarkdown(img));
     });
     const videos = [];
