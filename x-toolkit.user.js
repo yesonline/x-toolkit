@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.2
+// @version      1.3
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -54,8 +54,9 @@
       hideBookmarks: 'Hide Bookmarks', hideMessages: 'Hide Messages', hideCommunities: 'Hide Communities',
       hideCalls: 'Hide Calls', hideHistory: 'Hide History',
       hideHome: 'Hide Home', hideChat: 'Hide Chat', hideProfile: 'Hide Profile',
-      hideother: 'Hide Ads / Business', hideMutedNotices: 'Hide Muted Notices', hideRightColumn: 'Hide Right Sidebar',
+      hideother: 'Hide Ads / Business', hideAds: 'Hide Ads in Timeline', hideMutedNotices: 'Hide Muted Notices', hideRightColumn: 'Hide Right Sidebar',
       hideChatButton: 'Hide Floating Chat', hideCreatorsStudio: 'Hide Creator Studio',
+      widgets: 'Right-Column Modules', hidePremiumModule: 'Hide Premium Module', hideWhatsNew: "Hide What's New", hideWhoToFollow: 'Hide Who to Follow',
       useLargerCSS: 'Wider Post Area', cssWidth: 'Width (px)', useCustomPadding: 'Right Sidebar Spacing',
       paddingWidth: 'Padding (px)', filename: 'Filename format', postTime: 'Date/time format',
       sync: 'Sync history via bookmarks', zip: 'Bundle multiple media into a ZIP',
@@ -86,8 +87,9 @@
       hideBookmarks: '隱藏 書籤', hideMessages: '隱藏 訊息', hideCommunities: '隱藏 社群',
       hideCalls: '隱藏 通話', hideHistory: '隱藏 歷史記錄',
       hideHome: '隱藏 首頁', hideChat: '隱藏 聊天', hideProfile: '隱藏 個人資料',
-      hideother: '隱藏 廣告/商家', hideMutedNotices: '隱藏 靜音通知', hideRightColumn: '隱藏 右側邊欄',
+      hideother: '隱藏 廣告/商家', hideAds: '隱藏 業配廣告', hideMutedNotices: '隱藏 靜音通知', hideRightColumn: '隱藏 右側邊欄',
       hideChatButton: '隱藏 懸浮聊天', hideCreatorsStudio: '隱藏 創作者工作室',
+      widgets: '右欄模組', hidePremiumModule: '隱藏 訂閱 Premium', hideWhatsNew: '隱藏 有什麼新鮮事', hideWhoToFollow: '隱藏 跟隨誰',
       useLargerCSS: '更寬的貼文區', cssWidth: '寬度 (px)', useCustomPadding: '右側邊欄間距',
       paddingWidth: '間距 (px)', filename: '檔名格式', postTime: '日期格式',
       sync: '以書籤同步紀錄', zip: '多媒體打包成 ZIP',
@@ -118,8 +120,9 @@
       hideBookmarks: '隐藏 书签', hideMessages: '隐藏 消息', hideCommunities: '隐藏 社区',
       hideCalls: '隐藏 通话', hideHistory: '隐藏 历史记录',
       hideHome: '隐藏 首页', hideChat: '隐藏 聊天', hideProfile: '隐藏 个人资料',
-      hideother: '隐藏 广告/商家', hideMutedNotices: '隐藏 静音通知', hideRightColumn: '隐藏 右侧边栏',
+      hideother: '隐藏 广告/商家', hideAds: '隐藏 推广广告', hideMutedNotices: '隐藏 静音通知', hideRightColumn: '隐藏 右侧边栏',
       hideChatButton: '隐藏 悬浮聊天', hideCreatorsStudio: '隐藏 创作者工作室',
+      widgets: '右栏模块', hidePremiumModule: '隐藏 订阅 Premium', hideWhatsNew: '隐藏 有什么新鲜事', hideWhoToFollow: '隐藏 关注谁',
       useLargerCSS: '更宽的帖子区', cssWidth: '宽度 (px)', useCustomPadding: '右侧边栏间距',
       paddingWidth: '间距 (px)', filename: '文件名格式', postTime: '日期格式',
       sync: '通过书签同步记录', zip: '多媒体打包为 ZIP',
@@ -150,8 +153,9 @@
       hideBookmarks: 'ブックマークを非表示', hideMessages: 'メッセージを非表示', hideCommunities: 'コミュニティを非表示',
       hideCalls: '通話を非表示', hideHistory: '履歴を非表示',
       hideHome: 'ホームを非表示', hideChat: 'チャットを非表示', hideProfile: 'プロフィールを非表示',
-      hideother: '広告/feoを非表示', hideMutedNotices: 'ミュート通知を非表示', hideRightColumn: '右サイドバーを非表示',
+      hideother: '広告/feoを非表示', hideAds: '広告投稿を非表示', hideMutedNotices: 'ミュート通知を非表示', hideRightColumn: '右サイドバーを非表示',
       hideChatButton: 'フローティングチャットを非表示', hideCreatorsStudio: 'クリエイタースタジオを非表示',
+      widgets: '右カラムモジュール', hidePremiumModule: 'Premium登録を非表示', hideWhatsNew: 'トレンドを非表示', hideWhoToFollow: 'おすすめユーザーを非表示',
       useLargerCSS: '投稿エリアを拡大', cssWidth: '幅 (px)', useCustomPadding: '右サイドバーの間隔',
       paddingWidth: '間隔 (px)', filename: 'ファイル名形式', postTime: '日時形式',
       sync: 'ブックマークで履歴を同期', zip: '複数メディアを ZIP に',
@@ -182,8 +186,9 @@
       hideBookmarks: '북마크 숨기기', hideMessages: '메시지 숨기기', hideCommunities: '커뮤니티 숨기기',
       hideCalls: '통화 숨기기', hideHistory: '기록 숨기기',
       hideHome: '홈 숨기기', hideChat: '채팅 숨기기', hideProfile: '프로필 숨기기',
-      hideother: '광고/비즈니스 숨기기', hideMutedNotices: '뮤트 알림 숨기기', hideRightColumn: '오른쪽 사이드바 숨기기',
+      hideother: '광고/비즈니스 숨기기', hideAds: '광고 게시물 숨기기', hideMutedNotices: '뮤트 알림 숨기기', hideRightColumn: '오른쪽 사이드바 숨기기',
       hideChatButton: '플로팅 채팅 숨기기', hideCreatorsStudio: '크리에이터 스튜디오 숨기기',
+      widgets: '오른쪽 컬럼 모듈', hidePremiumModule: 'Premium 가입 숨기기', hideWhatsNew: '새 소식 숨기기', hideWhoToFollow: '팔로우 추천 숨기기',
       useLargerCSS: '넓은 게시물 영역', cssWidth: '너비 (px)', useCustomPadding: '오른쪽 사이드바 간격',
       paddingWidth: '간격 (px)', filename: '파일명 형식', postTime: '날짜/시간 형식',
       sync: '북마크로 기록 동기화', zip: '여러 미디어를 ZIP으로 묶기',
@@ -214,8 +219,9 @@
       hideBookmarks: 'Ocultar marcadores', hideMessages: 'Ocultar mensajes', hideCommunities: 'Ocultar comunidades',
       hideCalls: 'Ocultar llamadas', hideHistory: 'Ocultar historial',
       hideHome: 'Ocultar inicio', hideChat: 'Ocultar chats', hideProfile: 'Ocultar perfil',
-      hideother: 'Ocultar anuncios / empresas', hideMutedNotices: 'Ocultar avisos de silenciados', hideRightColumn: 'Ocultar barra derecha',
+      hideother: 'Ocultar anuncios / empresas', hideAds: 'Ocultar anuncios', hideMutedNotices: 'Ocultar avisos de silenciados', hideRightColumn: 'Ocultar barra derecha',
       hideChatButton: 'Ocultar chat flotante', hideCreatorsStudio: 'Ocultar Creator Studio',
+      widgets: 'Módulos de la columna derecha', hidePremiumModule: 'Ocultar módulo Premium', hideWhatsNew: 'Ocultar Novedades', hideWhoToFollow: 'Ocultar A quién seguir',
       useLargerCSS: 'Área de publicaciones más ancha', cssWidth: 'Ancho (px)', useCustomPadding: 'Espaciado de la barra derecha',
       paddingWidth: 'Espaciado (px)', filename: 'Formato del nombre de archivo', postTime: 'Formato de fecha/hora',
       sync: 'Sincronizar historial con marcadores', zip: 'Agrupar varios medios en un ZIP',
@@ -246,8 +252,9 @@
       hideBookmarks: 'Masquer les favoris', hideMessages: 'Masquer les messages', hideCommunities: 'Masquer les communautés',
       hideCalls: 'Masquer les appels', hideHistory: 'Masquer l’historique',
       hideHome: 'Masquer l’accueil', hideChat: 'Masquer les discussions', hideProfile: 'Masquer le profil',
-      hideother: 'Masquer les pubs / entreprises', hideMutedNotices: 'Masquer les avis de comptes muets', hideRightColumn: 'Masquer la colonne de droite',
+      hideother: 'Masquer les pubs / entreprises', hideAds: 'Masquer les publicités', hideMutedNotices: 'Masquer les avis de comptes muets', hideRightColumn: 'Masquer la colonne de droite',
       hideChatButton: 'Masquer le chat flottant', hideCreatorsStudio: 'Masquer Creator Studio',
+      widgets: 'Modules de la colonne de droite', hidePremiumModule: 'Masquer le module Premium', hideWhatsNew: 'Masquer les nouveautés', hideWhoToFollow: 'Masquer Qui suivre',
       useLargerCSS: 'Zone de publication plus large', cssWidth: 'Largeur (px)', useCustomPadding: 'Espacement de la colonne de droite',
       paddingWidth: 'Espacement (px)', filename: 'Format du nom de fichier', postTime: 'Format date/heure',
       sync: 'Synchroniser l’historique via les favoris', zip: 'Regrouper plusieurs médias dans un ZIP',
@@ -278,8 +285,9 @@
       hideBookmarks: 'Lesezeichen ausblenden', hideMessages: 'Nachrichten ausblenden', hideCommunities: 'Communities ausblenden',
       hideCalls: 'Anrufe ausblenden', hideHistory: 'Verlauf ausblenden',
       hideHome: 'Startseite ausblenden', hideChat: 'Chats ausblenden', hideProfile: 'Profil ausblenden',
-      hideother: 'Anzeigen / Unternehmen ausblenden', hideMutedNotices: 'Hinweise stummer Konten ausblenden', hideRightColumn: 'Rechte Spalte ausblenden',
+      hideother: 'Anzeigen / Unternehmen ausblenden', hideAds: 'Anzeigen im Feed ausblenden', hideMutedNotices: 'Hinweise stummer Konten ausblenden', hideRightColumn: 'Rechte Spalte ausblenden',
       hideChatButton: 'Schwebenden Chat ausblenden', hideCreatorsStudio: 'Creator Studio ausblenden',
+      widgets: 'Module der rechten Spalte', hidePremiumModule: 'Premium-Modul ausblenden', hideWhatsNew: 'Neuigkeiten ausblenden', hideWhoToFollow: 'Empfohlene Accounts ausblenden',
       useLargerCSS: 'Breiterer Post-Bereich', cssWidth: 'Breite (px)', useCustomPadding: 'Abstand der rechten Spalte',
       paddingWidth: 'Abstand (px)', filename: 'Dateinamensformat', postTime: 'Datums-/Zeitformat',
       sync: 'Verlauf über Lesezeichen synchronisieren', zip: 'Mehrere Medien in ein ZIP bündeln',
@@ -310,8 +318,9 @@
       hideBookmarks: 'Ocultar salvos', hideMessages: 'Ocultar mensagens', hideCommunities: 'Ocultar comunidades',
       hideCalls: 'Ocultar chamadas', hideHistory: 'Ocultar histórico',
       hideHome: 'Ocultar início', hideChat: 'Ocultar conversas', hideProfile: 'Ocultar perfil',
-      hideother: 'Ocultar anúncios / empresas', hideMutedNotices: 'Ocultar avisos de silenciados', hideRightColumn: 'Ocultar barra direita',
+      hideother: 'Ocultar anúncios / empresas', hideAds: 'Ocultar anúncios', hideMutedNotices: 'Ocultar avisos de silenciados', hideRightColumn: 'Ocultar barra direita',
       hideChatButton: 'Ocultar chat flutuante', hideCreatorsStudio: 'Ocultar Creator Studio',
+      widgets: 'Módulos da coluna direita', hidePremiumModule: 'Ocultar módulo Premium', hideWhatsNew: 'Ocultar Novidades', hideWhoToFollow: 'Ocultar Quem seguir',
       useLargerCSS: 'Área de postagens mais larga', cssWidth: 'Largura (px)', useCustomPadding: 'Espaçamento da barra direita',
       paddingWidth: 'Espaçamento (px)', filename: 'Formato do nome do arquivo', postTime: 'Formato de data/hora',
       sync: 'Sincronizar histórico por salvos', zip: 'Agrupar várias mídias em ZIP',
@@ -370,6 +379,10 @@
   TK.LANGS = LANGS;
   TK.LANG_NAMES = LANG_NAMES;
   TK.LANG_KEYS = [AUTO].concat(Object.keys(LANGS));
+  // Exposed so the settings panel can render the "auto" option as the detected
+  // language's native name + code (e.g. "繁體中文 zh-tw(auto)") instead of the
+  // raw navigator string.
+  TK.detectKey = detect;
 
   // TK.LANG is a live view of the active language so that a language switch
   // takes effect everywhere that reads it, without rebuilding the page.
@@ -450,10 +463,12 @@
     // clean & optimize
     hideReply: true, hideRetweet: true, hideBookmark: true, hideViews: true, hideShare: true,
     hideLike: false, hideGrok: true, hidePremiumSignUp: true, hideVerifiedOrgs: true, hideother: true,
+    hideAds: true,
     hideExplore: false, hideNotifications: false, hideBookmarks: false, hideMessages: false,
     hideHome: false, hideChat: false, hideProfile: false,
     hideCommunities: false, hideCalls: false, hideHistory: false, hideMutedNotices: false, hideRightColumn: false, hideChatButton: false,
     hideCreatorsStudio: false, useLargerCSS: false, cssWidth: 680, useCustomPadding: false, paddingWidth: 20,
+    hideWhatsNew: true, hideWhoToFollow: true, hidePremiumModule: true,
     // media downloader
     mdFilenameFormat: '{userId}-{postId}-{mediaType}{index}',
     mdPostTimeFormat: 'YYYYMMDD_HHmmss',
@@ -1011,53 +1026,60 @@
 
   const CSS = `
 .xtk-panel-backdrop {
-  position:fixed; inset:0; z-index:2147483001; background:rgba(0,0,0,.45);
+  position:fixed; inset:0; z-index:2147483001; background:rgba(0,0,0,.5);
   display:flex; align-items:center; justify-content:center; padding:16px;
   font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
 }
 .xtk-panel {
-  background:#fff; color:#0f1419; border-radius:16px; width:min(520px,100%);
-  max-height:86vh; overflow:auto; box-shadow:0 20px 60px rgba(0,0,0,.35);
-  padding:20px 22px 18px;
+  background:#fff; color:#0f1419; border-radius:0; width:min(760px,100%);
+  max-height:88vh; display:flex; flex-direction:column;
+  box-shadow:0 20px 60px rgba(0,0,0,.4); border:1px solid #2f3336;
 }
-@media (prefers-color-scheme: dark) {
-  .xtk-panel { background:#15202b; color:#eff3f4; }
-  .xtk-panel input[type=text], .xtk-panel input[type=number] {
-    background:#253341; color:#eff3f4; border-color:#38444d;
-  }
-  .xtk-panel fieldset { border-color:#38444d; }
-}
-.xtk-panel h2 { margin:0 0 4px; font-size:17px; }
-.xtk-panel h3 { margin:16px 0 6px; font-size:13px; text-transform:uppercase;
+/* top console bar: title + language switch, always visible */
+.xtk-head { display:flex; align-items:center; gap:12px; padding:12px 16px;
+  border-bottom:1px solid #e1e8ed; background:#f7f9f9; }
+.xtk-head h2 { margin:0; font-size:16px; font-weight:700; flex:1; letter-spacing:.02em; }
+.xtk-lang { display:flex; align-items:center; gap:8px; }
+.xtk-lang .xtk-lang-cap { font-size:13px; opacity:.7; }
+.xtk-lang select { min-width:190px; flex:0 0 auto; }
+/* scrollable multi-column dashboard body */
+.xtk-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px;
+  padding:16px; overflow:auto; align-content:start; }
+.xtk-card { border:1px solid #e1e8ed; border-radius:0; margin:0; padding:10px 12px 12px; }
+.xtk-card.span2 { grid-column:1 / -1; }
+.xtk-card h3 { margin:0 0 8px; font-size:12px; text-transform:uppercase;
   letter-spacing:.06em; opacity:.6; }
-.xtk-panel fieldset { border:1px solid #e1e8ed; border-radius:12px; margin:0 0 4px; padding:10px 12px 12px; }
-.xtk-panel label { display:flex; align-items:center; gap:8px; padding:4px 0; font-size:14px; cursor:pointer; }
+.xtk-card .cols { columns:2; column-gap:18px; }
+.xtk-panel label { display:flex; align-items:center; gap:8px; padding:3px 0; font-size:14px; cursor:pointer; }
 .xtk-panel label input[type=checkbox] { width:16px; height:16px; accent-color:#1d9bf0; }
-.xtk-panel .row { display:flex; align-items:center; gap:8px; padding:4px 0; font-size:14px; }
+.xtk-panel .row { display:flex; align-items:center; gap:8px; padding:3px 0; font-size:14px; }
 .xtk-panel .row span { flex:1; }
-.xtk-panel select {
-  flex:1; min-width:0; padding:5px 8px; border:1px solid #cfd9de; border-radius:8px;
-  font:13px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif; background:#fff; color:#0f1419;
-}
-@media (prefers-color-scheme: dark) {
-  .xtk-panel select { background:#253341; color:#eff3f4; border-color:#38444d; }
-}
+.xtk-panel select { flex:1; min-width:0; padding:5px 8px; border:1px solid #cfd9de; border-radius:0;
+  font:13px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif; background:#fff; color:#0f1419; }
 .xtk-panel input[type=text], .xtk-panel input[type=number] {
-  flex:1; min-width:0; padding:5px 8px; border:1px solid #cfd9de; border-radius:8px;
-  font:13px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; background:#fff; color:#0f1419;
-}
-.xtk-panel .actions { display:flex; gap:8px; justify-content:flex-end; margin-top:16px; }
-.xtk-panel button {
-  border-radius:9999px; padding:8px 18px; font:600 14px/1 system-ui,sans-serif;
-  cursor:pointer; border:1px solid transparent;
-}
+  flex:1; min-width:0; padding:5px 8px; border:1px solid #cfd9de; border-radius:0;
+  font:13px/1.3 ui-monospace,SFMono-Regular,Menlo,monospace; background:#fff; color:#0f1419; }
+.xtk-foot { display:flex; align-items:center; gap:8px; padding:12px 16px;
+  border-top:1px solid #e1e8ed; background:#f7f9f9; }
+.xtk-foot .spacer { flex:1; }
+.xtk-panel button { border-radius:0; padding:8px 18px; font:600 14px/1 system-ui,sans-serif;
+  cursor:pointer; border:1px solid transparent; }
 .xtk-panel button.primary { background:#1d9bf0; color:#fff; }
 .xtk-panel button.ghost { background:transparent; border-color:#cfd9de; color:inherit; }
+@media (max-width:640px){ .xtk-grid { grid-template-columns:1fr; } .xtk-card .cols { columns:1; } }
+@media (prefers-color-scheme: dark) {
+  .xtk-panel { background:#15202b; color:#eff3f4; border-color:#57606a; }
+  .xtk-head, .xtk-foot { background:#0d1621; border-color:#38444d; }
+  .xtk-card { border-color:#38444d; }
+  .xtk-panel input[type=text], .xtk-panel input[type=number], .xtk-panel select {
+    background:#253341; color:#eff3f4; border-color:#38444d; }
+}
 `;
 
   const CHECKS = [
     { group: 'tweetBtns', items: ['hideReply', 'hideRetweet', 'hideLike', 'hideBookmark', 'hideViews', 'hideShare'] },
-    { group: 'sidebar', items: ['hideHome', 'hideExplore', 'hideNotifications', 'hideChat', 'hideCalls', 'hideGrok', 'hideHistory', 'hideCreatorsStudio', 'hidePremiumSignUp', 'hideProfile', 'hideBookmarks', 'hideCommunities', 'hideVerifiedOrgs', 'hideother', 'hideMutedNotices', 'hideRightColumn', 'hideChatButton'] },
+    { group: 'sidebar', items: ['hideHome', 'hideExplore', 'hideNotifications', 'hideChat', 'hideCalls', 'hideGrok', 'hideHistory', 'hideCreatorsStudio', 'hidePremiumSignUp', 'hideProfile', 'hideBookmarks', 'hideCommunities', 'hideVerifiedOrgs', 'hideother', 'hideAds', 'hideMutedNotices', 'hideRightColumn', 'hideChatButton'] },
+    { group: 'widgets', items: ['hideWhatsNew', 'hideWhoToFollow', 'hidePremiumModule'] },
     { group: 'layout', items: ['useLargerCSS', 'useCustomPadding'] }
   ];
 
@@ -1073,71 +1095,23 @@
   function buildPanel() {
     const L = TK.LANG;
     const S = TK.settings;
+
     const backdrop = document.createElement('div');
     backdrop.className = 'xtk-panel-backdrop';
 
     const panel = document.createElement('div');
     panel.className = 'xtk-panel';
 
-    const h = document.createElement('h2');
-    h.textContent = 'X Toolkit — ' + L.settings;
-    panel.appendChild(h);
-
-    // language picker -----------------------------------------------------
-    const ls = document.createElement('fieldset');
-    const lh = document.createElement('h3');
-    lh.textContent = L.language;
-    ls.appendChild(lh);
-    const lrow = document.createElement('div');
-    lrow.className = 'row';
-    const lspan = document.createElement('span');
-    lspan.textContent = L.language;
-    const lsel = document.createElement('select');
-    lsel.className = 'xtk-select';
-    TK.LANG_KEYS.forEach((code) => {
-      const opt = document.createElement('option');
-      opt.value = code;
-      opt.textContent = code === 'auto'
-        ? (navigator.language || 'en') + ' (auto)'
-        : (TK.LANG_NAMES[code] || code);
-      lsel.appendChild(opt);
-    });
-    lsel.value = S.uiLang || 'auto';
-    lsel.addEventListener('change', () => {
-      TK.setLang(lsel.value);
-      // Re-render in place so the whole panel follows the new language.
-      TK.panel.open();
-    });
-    lrow.appendChild(lspan);
-    lrow.appendChild(lsel);
-    ls.appendChild(lrow);
-    panel.appendChild(ls);
-
-    // features
-    const fs = document.createElement('fieldset');
-    const fh = document.createElement('h3');
-    fh.textContent = L.feat;
-    fs.appendChild(fh);
-    FEATURES.forEach((f) => {
-      const l = document.createElement('label');
-      const i = document.createElement('input');
-      i.type = 'checkbox';
-      i.checked = !!S[f.key];
-      i.addEventListener('change', () => { S[f.key] = i.checked; });
-      l.appendChild(i);
-      const t = document.createElement('span');
-      t.textContent = L[f.label];
-      l.appendChild(t);
-      fs.appendChild(l);
-    });
-    panel.appendChild(fs);
-
-    // block button placements (sub-switches under the Quick Block feature)
-    const bs = document.createElement('fieldset');
-    const bh = document.createElement('h3');
-    bh.textContent = L.blockPlaces;
-    bs.appendChild(bh);
-    ['blockBtnRow', 'blockBtnHead', 'blockBtnProfile'].forEach((key) => {
+    // -- helpers ----------------------------------------------------------
+    const card = (title, span2) => {
+      const f = document.createElement('fieldset');
+      f.className = 'xtk-card' + (span2 ? ' span2' : '');
+      const h = document.createElement('h3');
+      h.textContent = title;
+      f.appendChild(h);
+      return f;
+    };
+    const check = (parent, key, text) => {
       const l = document.createElement('label');
       const i = document.createElement('input');
       i.type = 'checkbox';
@@ -1145,40 +1119,11 @@
       i.addEventListener('change', () => { S[key] = i.checked; });
       l.appendChild(i);
       const t = document.createElement('span');
-      t.textContent = L[key] || key;
+      t.textContent = text;
       l.appendChild(t);
-      bs.appendChild(l);
-    });
-    panel.appendChild(bs);
-
-    // clean options
-    const cs = document.createElement('fieldset');
-    const ch = document.createElement('h3');
-    ch.textContent = L.clean;
-    cs.appendChild(ch);
-    CHECKS.forEach((g) => {
-      const gl = document.createElement('div');
-      gl.style.fontWeight = '600';
-      gl.style.fontSize = '13px';
-      gl.style.marginTop = '8px';
-      gl.textContent = L[g.group];
-      cs.appendChild(gl);
-      g.items.forEach((key) => {
-        const l = document.createElement('label');
-        const i = document.createElement('input');
-        i.type = 'checkbox';
-        i.checked = !!S[key];
-        i.addEventListener('change', () => { S[key] = i.checked; });
-        l.appendChild(i);
-        const t = document.createElement('span');
-        t.textContent = L[key] || key;
-        l.appendChild(t);
-        cs.appendChild(l);
-      });
-    });
-
-    // numeric inputs
-    const numRow = (key, labelKey) => {
+      parent.appendChild(l);
+    };
+    const numRow = (parent, key, labelKey) => {
       const row = document.createElement('div');
       row.className = 'row';
       const s = document.createElement('span');
@@ -1189,18 +1134,9 @@
       i.addEventListener('change', () => { S[key] = parseInt(i.value, 10) || 0; });
       row.appendChild(s);
       row.appendChild(i);
-      cs.appendChild(row);
+      parent.appendChild(row);
     };
-    numRow('cssWidth', 'cssWidth');
-    numRow('paddingWidth', 'paddingWidth');
-    panel.appendChild(cs);
-
-    // media options
-    const ms = document.createElement('fieldset');
-    const mh = document.createElement('h3');
-    mh.textContent = L.media;
-    ms.appendChild(mh);
-    const txtRow = (key, labelKey) => {
+    const txtRow = (parent, key, labelKey) => {
       const row = document.createElement('div');
       row.className = 'row';
       const s = document.createElement('span');
@@ -1211,27 +1147,102 @@
       i.addEventListener('change', () => { S[key] = i.value; });
       row.appendChild(s);
       row.appendChild(i);
-      ms.appendChild(row);
+      parent.appendChild(row);
     };
-    txtRow('mdFilenameFormat', 'filename');
-    txtRow('mdPostTimeFormat', 'postTime');
-    [['mdZip', 'zip'], ['mdSync', 'sync']].forEach(([key, labelKey]) => {
-      const l = document.createElement('label');
-      const i = document.createElement('input');
-      i.type = 'checkbox';
-      i.checked = !!S[key];
-      i.addEventListener('change', () => { S[key] = i.checked; });
-      l.appendChild(i);
-      const t = document.createElement('span');
-      t.textContent = L[labelKey];
-      l.appendChild(t);
-      ms.appendChild(l);
-    });
-    panel.appendChild(ms);
+    const itemsOf = (group) => (CHECKS.find((c) => c.group === group) || { items: [] }).items;
 
-    // actions
-    const acts = document.createElement('div');
-    acts.className = 'actions';
+    // -- top console bar: title + language switch (always visible) --------
+    const head = document.createElement('div');
+    head.className = 'xtk-head';
+    const h2 = document.createElement('h2');
+    h2.textContent = 'X Toolkit — ' + L.settings;
+    head.appendChild(h2);
+
+    const langWrap = document.createElement('div');
+    langWrap.className = 'xtk-lang';
+    const langCap = document.createElement('span');
+    langCap.className = 'xtk-lang-cap';
+    langCap.textContent = L.language;
+    langWrap.appendChild(langCap);
+
+    const lsel = document.createElement('select');
+    // Label format: native name + lowercase code. The "auto" entry shows the
+    // detected language the same way, suffixed with "(auto)" — e.g.
+    // "繁體中文 zh-tw(auto)" — instead of the raw navigator string.
+    const langLabel = (code) => {
+      if (code === 'auto') {
+        const det = TK.detectKey();
+        return (TK.LANG_NAMES[det] || det) + ' ' + det.toLowerCase() + '(auto)';
+      }
+      return (TK.LANG_NAMES[code] || code) + ' ' + code.toLowerCase();
+    };
+    TK.LANG_KEYS.forEach((code) => {
+      const opt = document.createElement('option');
+      opt.value = code;
+      opt.textContent = langLabel(code);
+      lsel.appendChild(opt);
+    });
+    lsel.value = S.uiLang || 'auto';
+    lsel.addEventListener('change', () => {
+      TK.setLang(lsel.value);
+      // Re-render in place so the whole console follows the new language.
+      TK.panel.open();
+    });
+    langWrap.appendChild(lsel);
+    head.appendChild(langWrap);
+    panel.appendChild(head);
+
+    // -- dashboard grid ---------------------------------------------------
+    const grid = document.createElement('div');
+    grid.className = 'xtk-grid';
+
+    const featCard = card(L.feat);
+    FEATURES.forEach((f) => check(featCard, f.key, L[f.label]));
+    grid.appendChild(featCard);
+
+    const blockCard = card(L.blockPlaces);
+    ['blockBtnRow', 'blockBtnHead', 'blockBtnProfile'].forEach((key) => check(blockCard, key, L[key] || key));
+    grid.appendChild(blockCard);
+
+    const tweetCard = card(L.tweetBtns);
+    itemsOf('tweetBtns').forEach((key) => check(tweetCard, key, L[key] || key));
+    grid.appendChild(tweetCard);
+
+    const layoutCard = card(L.layout);
+    itemsOf('layout').forEach((key) => check(layoutCard, key, L[key] || key));
+    numRow(layoutCard, 'cssWidth', 'cssWidth');
+    numRow(layoutCard, 'paddingWidth', 'paddingWidth');
+    grid.appendChild(layoutCard);
+
+    // Panel blocks (right-column modules). Placed next to Media so the two
+    // single-column cards sit side by side in the 2-column grid.
+    const widgetsCard = card(L.widgets);
+    itemsOf('widgets').forEach((key) => check(widgetsCard, key, L[key] || key));
+    grid.appendChild(widgetsCard);
+
+    const mediaCard = card(L.media);
+    txtRow(mediaCard, 'mdFilenameFormat', 'filename');
+    txtRow(mediaCard, 'mdPostTimeFormat', 'postTime');
+    [['mdZip', 'zip'], ['mdSync', 'sync']].forEach((pair) => check(mediaCard, pair[0], L[pair[1]]));
+    grid.appendChild(mediaCard);
+
+    // Sidebar & menu is the largest group -> span both columns, two inner cols.
+    const sideCard = card(L.sidebar, true);
+    const sideCols = document.createElement('div');
+    sideCols.className = 'cols';
+    itemsOf('sidebar').forEach((key) => check(sideCols, key, L[key] || key));
+    sideCard.appendChild(sideCols);
+    grid.appendChild(sideCard);
+
+    panel.appendChild(grid);
+
+    // -- footer actions ---------------------------------------------------
+    const foot = document.createElement('div');
+    foot.className = 'xtk-foot';
+    const spacer = document.createElement('div');
+    spacer.className = 'spacer';
+    foot.appendChild(spacer);
+
     const closeBtn = document.createElement('button');
     closeBtn.className = 'ghost';
     closeBtn.textContent = L.close;
@@ -1244,9 +1255,9 @@
       backdrop.remove();
       location.reload();
     });
-    acts.appendChild(closeBtn);
-    acts.appendChild(saveBtn);
-    panel.appendChild(acts);
+    foot.appendChild(closeBtn);
+    foot.appendChild(saveBtn);
+    panel.appendChild(foot);
 
     backdrop.appendChild(panel);
     backdrop.addEventListener('click', (e) => { if (e.target === backdrop) backdrop.remove(); });
@@ -1313,7 +1324,12 @@
     retweet: ['[data-testid="retweet"]', '[data-testid="unretweet"]'],
     like: ['[data-testid="like"]', '[data-testid="unlike"]'],
     bookmark: ['[data-testid="bookmark"]', '[data-testid="removeBookmark"]'],
-    share: ['[data-testid="share"]'],
+    // Older (pre-2026) build has NO data-testid="share": the share control is a
+    // plain <button aria-haspopup="menu"> whose only stable, language-independent
+    // hook is the share/upload arrow icon. That path prefix appears exactly once
+    // per tweet (17/17 in the saved old DOM), so it isolates the share button
+    // without touching retweet/caret, which also carry aria-haspopup="menu".
+    share: ['[data-testid="share"]', 'button:has(path[d^="M12 2.59"])'],
     generic: ['[data-testid="tweet-detail-metric-view"]']
   };
 
@@ -1420,8 +1436,70 @@
     ]
   };
 
+  // Sponsored posts (ads) in the timeline. Verified against two saved DOMs.
+  //
+  // NEW (2026) build: the timeline is <ul><li><article>; there is NO
+  // cellInnerDiv, NO data-testid="ad" and NO placementTracking in the real DOM
+  // (those strings only showed up in the saved file because the userscript's own
+  // injected <style> text got captured by "save page complete"). The one
+  // language-independent, ad-only hook is X's ad click-tracking param "twclid"
+  // on the sponsored destination link (in the saved DOM twclid appeared only on
+  // the ad's external link, never on organic posts), so hide the whole cell.
+  //
+  // OLD (pre-2026) build: ads are wrapped in a dedicated placement-tracking
+  // container (verified: 10 real occurrences of [data-testid="placementTracking"]
+  // in the saved old DOM), and the ad cell also carries the "About these ads"
+  // help link.
+  //
+  // A bare `div:has(...)` is never used — it would match the timeline root and
+  // hide every post.
+  //
+  // "Promoted" tweet ads (推廣) carry the ad click id twclid on their link, so
+  // the rules above already cover them. As a fallback for promoted posts that
+  // have no twclid link (e.g. account-only promotions), we also key off the
+  // "Promoted" megaphone icon: its SVG path prefix "M21 5.61a10..." appears only
+  // inside ad <article>s in the saved DOMs (verified absent from organic posts
+  // and from the older build), so it is language-independent and ad-specific.
+  const ADS = [
+    'li:has(a[href*="twclid"])',
+    'article:has(a[href*="twclid"])',
+    'li:has(path[d^="M21 5.61a10"])',
+    'article:has(path[d^="M21 5.61a10"])',
+    '[data-testid="placementTracking"]',
+    'div[data-testid="cellInnerDiv"]:has(a[href*="how-twitter-ads-work"])'
+  ];
+
+  // Right-column modules ("panel blocks"). Verified against both saved DOMs.
+  // NEW (2026) build: each module is a <section> inside the right <aside>, with
+  // language-independent hooks: the trends list rows carry
+  // data-href*="src=trend_click", the Who-to-follow box has [data-who-to-follow],
+  // and the Subscribe-to-Premium box links to /i/premium_sign_up.
+  // OLD (pre-2026) build: the same modules were keyed by data-testid
+  // ("trend" rows; WhoToFollow / userItem rows; premium-bundle-cta box).
+  const WIDGETS = {
+    hideWhatsNew: [
+      'aside section:has([data-href*="src=trend_click"])',
+      'section:has([data-href*="src=trend_click"])',
+      '[data-testid="trend"]'
+    ],
+    hideWhoToFollow: [
+      'aside section:has([data-who-to-follow])',
+      'section:has([data-who-to-follow])',
+      '[data-testid="WhoToFollow"]',
+      '[data-testid="userItem"]'
+    ],
+    hidePremiumModule: [
+      'aside section:has(a[href*="/i/premium_sign_up"])',
+      '[data-testid="premium-bundle-cta"]'
+    ]
+  };
+
   const CHROME = {
     hideGrok: GROK,
+    hideAds: ADS,
+    hideWhatsNew: WIDGETS.hideWhatsNew,
+    hideWhoToFollow: WIDGETS.hideWhoToFollow,
+    hidePremiumModule: WIDGETS.hidePremiumModule,
     hidePremiumSignUp: UPSELL,
     hideVerifiedOrgs: ['a[href*="verified-orgs-signup"]', '[data-icon="icon-verified-orgs"]'],
     hideother: ['a[href*="/i/ads"]', 'a[href*="ads.twitter.com"]', 'a[href*="ads.x.com"]'],
@@ -1438,6 +1516,12 @@
     ],
     hideCreatorsStudio: [
       'a[class*="sidebar-item"][href*="/creators/studio"]',
+      // Older (pre-2026) build: the item is a plain <a role="link"> with a
+      // randomised css-* class (no sidebar-item) and href https://x.com/i/jf/
+      // creators/studio, and it is NOT an AppTabBar_*_Link. A language-
+      // independent href match covers both the old /i/jf/creators/studio and
+      // the new build, so it is listed unqualified.
+      'a[href*="/creators/studio"]', 'a[href*="studio.x.com"]',
       'a[href*="/i/creators_"]', 'a[href*="studio.twitter.com"]'
     ]
   };
