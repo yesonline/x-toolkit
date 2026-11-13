@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| 版本 Version | `1.2` |
+| 版本 Version | `1.3` |
 | 授權 License | [MIT](LICENSE) |
 | 适用 Matches | `https://x.com/*`, `https://twitter.com/*` |
 | 管理員 Manager | Tampermonkey / Violentmonkey / Greasemonkey |
@@ -20,7 +20,7 @@
 ## 繁體中文
 
 ### 這是什麼
-X Toolkit 把常用的 X/Twitter 增强整合成**單一檔案**的 Tampermonkey 腳本，無需安裝、無需建置。所有開關可在腳本內建的「設定」面板調整，並即時切換介面語言。
+X Toolkit 把常用的 X/Twitter 增强整合成**單一檔案**的 Tampermonkey 腳本。所有開關可在腳本內建的「設定」面板調整，並即時切換介面語言。
 
 ### 功能
 - **介面純淨化（Clean & Optimize）**：隱藏回覆／轉發／書籤／查看數／分享等互動按鈕，以及 Grok、Premium、已認證組織、廣告、側欄項目、右側趨勢欄等；可加寬貼文區、調整右欄間距。
@@ -96,9 +96,8 @@ X Toolkit 把常用的 X/Twitter 增强整合成**單一檔案**的 Tampermonkey
 ## English
 
 ### What is this
-X Toolkit bundles the most useful X/Twitter enhancements into a **single-file**
-Tampermonkey userscript — no install server, no build step. Every switch lives in
-a built-in Settings panel, and the interface language can be changed on the fly.
+X Toolkit bundles the most useful X/Twitter enhancements into a **single-file** Tampermonkey userscript. 
+Every switch lives in a built-in Settings panel, and the interface language can be changed on the fly.
 
 ### Features
 - **Clean & Optimize**: hide reply / repost / bookmark / view-count / share buttons,
