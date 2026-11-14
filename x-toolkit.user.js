@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.3.2
+// @version      1.3.3
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -1696,30 +1696,69 @@
     window.open(url, '_blank', 'noopener');
   }
 
+  // twitter-thread.com keeps serving the "Thread Not Found" placeholder page
+  // until its server-side unroll has finished AND the page cache is warm. The
+  // unroll API's own response only signals that the crawl started, so opening
+  // /t/<id> on that response races ahead of materialisation: the first click
+  // lands on the placeholder and only a manual refresh works. We poll /t/<id>
+  // and open the tab only once the real thread is actually served.
+  const NOT_FOUND_RE = /Thread Not Found/i;
+
+  function threadReady(id) {
+    return new Promise((resolve) => {
+      if (typeof GM_xmlhttpRequest !== 'function') { resolve(false); return; }
+      try {
+        GM_xmlhttpRequest({
+          method: 'GET',
+          url: API_BASE + '/t/' + id,
+          headers: { 'User-Agent': 'Mozilla/5.0' },
+          timeout: 8000,
+          onload: (res) => resolve(!!res.responseText && !NOT_FOUND_RE.test(res.responseText)),
+          onerror: () => resolve(false),
+          ontimeout: () => resolve(false)
+        });
+      } catch (e) { resolve(false); }
+    });
+  }
+
   function unrollAndOpen(id) {
     if (!id) { TK.toast(TK.t('toastThreadNoId'), 'error'); return; }
     const page = API_BASE + '/t/' + id;
     TK.toast(TK.t('toastThreadLoading'), 'info');
 
-    let done = false;
-    const open = () => { if (done) return; done = true; openTab(page); };
+    let opened = false;
+    const open = () => { if (opened) return; opened = true; openTab(page); };
 
+    // No GM bridge available: open immediately and let the reader warm itself.
     if (typeof GM_xmlhttpRequest !== 'function') { open(); return; }
-    try {
-      GM_xmlhttpRequest({
-        method: 'GET',
-        url: API_BASE + '/api/unroll-thread?id=' + encodeURIComponent(id),
-        headers: { 'User-Agent': 'Mozilla/5.0' },
-        timeout: 15000,
-        onload: () => open(),
-        onerror: () => open(),
-        ontimeout: () => open()
-      });
-    } catch (e) {
+
+    const request = (url, ms) => new Promise((resolve) => {
+      try {
+        GM_xmlhttpRequest({
+          method: 'GET',
+          url,
+          headers: { 'User-Agent': 'Mozilla/5.0' },
+          timeout: ms,
+          onload: resolve,
+          onerror: resolve,
+          ontimeout: resolve
+        });
+      } catch (e) { resolve(); }
+    });
+
+    (async () => {
+      // 1. Trigger the server-side unroll. Do NOT open on its response alone.
+      await request(API_BASE + '/api/unroll-thread?id=' + encodeURIComponent(id), 15000);
+      // 2. Wait until /t/<id> actually serves the thread, within a total budget.
+      const deadline = Date.now() + 10000;
+      while (Date.now() < deadline) {
+        if (await threadReady(id)) break;
+        await new Promise((r) => setTimeout(r, 700));
+      }
+      // 3. Open once materialised, or after the budget as a last resort so the
+      //    click is never dead; a refresh then hits the now-warm cache.
       open();
-    }
-    // Never let a stalled request block the tab from opening.
-    setTimeout(open, 4000);
+    })();
   }
 
   TK.thread = {
@@ -2882,4 +2921,3 @@
     boot();
   }
 })(window.XTK);
-
