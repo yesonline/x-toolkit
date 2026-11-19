@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.3.3.3
+// @version      1.3.3.4
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -1499,28 +1499,31 @@
   // all). Rules are now isolated per selector AND a JS pass (applyWidgetCards)
   // hides the actual card element, so these CSS hooks only need to be shallow and
   // language-independent.
+  // IMPORTANT: module hooks are scoped to the RIGHT RAIL only. On profile pages X
+  // embeds "Who to follow" recommendation cells (data-testid="UserCell") directly
+  // inside the timeline, and the rail (sidebarColumn) itself lives inside <main>,
+  // so an unscoped selector would treat the whole timeline as a "card" and hide it
+  // while scrolling. RAIL anchors every selector to the right-column container so
+  // the timeline (primaryColumn) can never be matched.
+  const RAIL = ':is([data-testid="sidebarColumn"], main ~ aside)';
   const WIDGETS = {
     hideWhatsNew: [
-      // Card landmark (trends region) — present in both builds; hides heading +
-      // rows + "show more" together.
-      'section:has([data-testid="trend"])',
-      // Rows (fallback if the landmark match is unreliable for display:none kids).
-      '[data-testid="trend"]',
-      // Legacy build hooks.
-      'aside section:has([data-href*="src=trend_click"])',
-      'section:has([data-href*="src=trend_click"])'
+      // Card landmark (trends region) inside the rail — hides heading + rows + show more.
+      RAIL + ' section:has([data-testid="trend"])',
+      // Rows (fallback).
+      RAIL + ' [data-testid="trend"]',
+      // Legacy build hooks (rail-scoped).
+      RAIL + ' section:has([data-href*="src=trend_click"])'
     ],
     hideWhoToFollow: [
-      // Card landmark (Who-to-follow complementary region) — present in both
-      // builds; its <h2> heading sits inside, so hiding it removes the title too.
-      'aside:has([data-testid="UserCell"])',
+      // Card landmark (Who-to-follow complementary region) inside the rail.
+      RAIL + ' aside:has([data-testid="UserCell"])',
       // Rows (fallback).
-      '[data-testid="UserCell"]',
-      // Legacy build hooks.
-      'aside section:has([data-who-to-follow])',
-      'section:has([data-who-to-follow])',
-      '[data-testid="WhoToFollow"]',
-      '[data-testid="userItem"]'
+      RAIL + ' [data-testid="UserCell"]',
+      // Legacy build hooks (rail-scoped).
+      RAIL + ' [data-testid="WhoToFollow"]',
+      RAIL + ' [data-testid="userItem"]',
+      RAIL + ' section:has([data-who-to-follow])'
     ],
     hidePremiumModule: [
       'aside section:has(a[href*="/i/premium_sign_up"])',
@@ -1657,16 +1660,32 @@
   }
 
   function applyWidgetCards() {
+    // Restrict to the right-rail container(s). On profile pages the rail lives
+    // inside <main> and the timeline embeds its own UserCell recommendation rows,
+    // so a global row search would hide the timeline. Scoping to the rail roots
+    // (sidebarColumn / main ~ aside) plus the article guard below prevents that.
+    let roots;
+    try {
+      roots = document.querySelectorAll('[data-testid="sidebarColumn"], main ~ aside');
+    } catch (e) { return; }
+    if (!roots || !roots.length) return;
     const groups = [
       { hide: !!S.hideWhatsNew, rows: '[data-testid="trend"], [data-href*="src=trend_click"]' },
       { hide: !!S.hideWhoToFollow, rows: '[data-testid="UserCell"], [data-testid="userItem"], [data-testid="WhoToFollow"], [data-who-to-follow]' }
     ];
     groups.forEach((g) => {
-      let rows;
-      try { rows = document.querySelectorAll(g.rows); } catch (e) { return; }
       const cards = new Set();
-      rows.forEach((r) => { const c = moduleCardBox(r); if (c) cards.add(c); });
+      roots.forEach((root) => {
+        let rows;
+        try { rows = root.querySelectorAll(g.rows); } catch (e) { return; }
+        rows.forEach((r) => { const c = moduleCardBox(r); if (c) cards.add(c); });
+      });
       cards.forEach((c) => {
+        // Never hide a container that holds tweets — that is the timeline/feed,
+        // not a right-column module card.
+        let hasTweet = false;
+        try { hasTweet = !!c.querySelector('article, [data-testid="tweet"]'); } catch (e) { hasTweet = true; }
+        if (hasTweet) return;
         if (g.hide) c.classList.add('xtk-w-hide');
         else c.classList.remove('xtk-w-hide');
       });
