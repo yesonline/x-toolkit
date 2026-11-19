@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| 版本 Version | `1.3.3.3` |
+| 版本 Version | `1.3.3.4` |
 | 授權 License | [MIT](LICENSE) |
 | 适用 Matches | `https://x.com/*`, `https://twitter.com/*` |
 | 管理員 Manager | Tampermonkey / Violentmonkey / Greasemonkey |
@@ -51,6 +51,7 @@ X Toolkit 把常用的 X/Twitter 增强整合成**單一檔案**的 Tampermonkey
 | 功能總開關 | 純淨化、Thread、封鎖、Emoji、媒體、Markdown |
 | 封鎖按鈕位置 | 互動列封鎖鈕 / 貼文右上角封鎖鈕 / 個人主頁封鎖鈕（需先開「封鎖」總開關） |
 | 推文按鈕 | 隱藏 回覆/轉發/喜歡/書籤/查看數/分享 |
+| 右欄模組 | 隱藏 有甚麼新鮮事（趨勢）/ 跟隨誰 / 訂閱 Premium（新舊版面皆可，並保護個人主頁時間軸不被誤藏） |
 | 側邊欄與選單 | 首頁/探索/通知/聊天/通話/歷史記錄/個人資料/書籤/社群/Grok/Premium/已認證組織/廣告/靜音通知/右側欄/懸浮聊天/創作者工作室 |
 | 版面與寬度 | 更寬貼文區（px）、右側欄間距（px） |
 | 媒體下載 | 檔名格式、日期格式、以書籤同步、打包 ZIP |
@@ -96,8 +97,9 @@ X Toolkit 把常用的 X/Twitter 增强整合成**單一檔案**的 Tampermonkey
 ## English
 
 ### What is this
-X Toolkit bundles the most useful X/Twitter enhancements into a **single-file** Tampermonkey userscript. 
-Every switch lives in a built-in Settings panel, and the interface language can be changed on the fly.
+X Toolkit bundles the most useful X/Twitter enhancements into a **single-file**
+Tampermonkey userscript. Every switch lives in
+a built-in Settings panel, and the interface language can be changed on the fly.
 
 ### Features
 - **Clean & Optimize**: hide reply / repost / bookmark / view-count / share buttons,
@@ -145,6 +147,7 @@ Every switch lives in a built-in Settings panel, and the interface language can 
 | Feature switches | Clean, Thread, Block, Emoji, Media, Markdown |
 | Block buttons | actions-row block / post top-right block / profile block (require the Block master switch) |
 | Tweet buttons | Hide reply / repost / like / bookmark / views / share |
+| Right-column modules | Hide What's happening (Trends) / Who to follow / Subscribe to Premium (works on both new and old layouts, and protects the profile-page timeline from being hidden by mistake) |
 | Sidebar & menu | Home / Explore / Notifications / Chat / Calls / History / Profile / Bookmarks / Communities / Grok / Premium / Verified Orgs / Ads / Muted notices / Right column / Floating chat / Creator Studio |
 | Layout & width | Wider post area (px), right-column spacing (px) |
 | Media downloader | Filename format, date format, sync via bookmarks, bundle ZIP |
