@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.3.3
+// @version      1.3.3.3
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -72,6 +72,7 @@
       toastNoPost: 'No post found on this page',
       toastMdSaved: 'Markdown saved',
       toastNoMedia: 'No media found in this post',
+      toastHlsFailed: 'Could not fetch this video (play it once, then retry)',
       toastDownloadFailed: 'Download failed',
       toastDownloaded: 'Downloaded'
     },
@@ -105,6 +106,7 @@
       toastNoPost: '此頁面找不到貼文',
       toastMdSaved: 'Markdown 已儲存',
       toastNoMedia: '此貼文沒有媒體',
+      toastHlsFailed: '無法取得此影片（請先播放一次再重試）',
       toastDownloadFailed: '下載失敗',
       toastDownloaded: '已下載'
     },
@@ -138,6 +140,7 @@
       toastNoPost: '此页面未找到帖子',
       toastMdSaved: 'Markdown 已保存',
       toastNoMedia: '此帖子没有媒体',
+      toastHlsFailed: '无法获取此视频（请先播放一次再重试）',
       toastDownloadFailed: '下载失败',
       toastDownloaded: '已下载'
     },
@@ -171,6 +174,7 @@
       toastNoPost: 'このページに投稿が見つかりません',
       toastMdSaved: 'Markdown を保存しました',
       toastNoMedia: 'この投稿にメディアはありません',
+      toastHlsFailed: 'この動画を取得できませんでした（一度再生してから再試行してください）',
       toastDownloadFailed: 'ダウンロードに失敗しました',
       toastDownloaded: 'ダウンロードしました'
     },
@@ -204,6 +208,7 @@
       toastNoPost: '이 페이지에서 게시물을 찾지 못했습니다',
       toastMdSaved: 'Markdown을 저장했습니다',
       toastNoMedia: '이 게시물에 미디어가 없습니다',
+      toastHlsFailed: '이 동영상을 가져올 수 없습니다 (한 번 재생한 후 다시 시도하세요)',
       toastDownloadFailed: '다운로드 실패',
       toastDownloaded: '다운로드 완료'
     },
@@ -237,6 +242,7 @@
       toastNoPost: 'No se encontró ninguna publicación en esta página',
       toastMdSaved: 'Markdown guardado',
       toastNoMedia: 'No hay medios en esta publicación',
+      toastHlsFailed: 'No se pudo obtener este video (reprodúcelo una vez y vuelve a intentarlo)',
       toastDownloadFailed: 'Error en la descarga',
       toastDownloaded: 'Descargado'
     },
@@ -270,6 +276,7 @@
       toastNoPost: 'Aucune publication trouvée sur cette page',
       toastMdSaved: 'Markdown enregistré',
       toastNoMedia: 'Aucun média dans cette publication',
+      toastHlsFailed: 'Impossible de récupérer cette vidéo (lisez-la une fois puis réessayez)',
       toastDownloadFailed: 'Échec du téléchargement',
       toastDownloaded: 'Téléchargé'
     },
@@ -303,6 +310,7 @@
       toastNoPost: 'Kein Beitrag auf dieser Seite gefunden',
       toastMdSaved: 'Markdown gespeichert',
       toastNoMedia: 'Keine Medien in diesem Beitrag',
+      toastHlsFailed: 'Dieses Video konnte nicht abgerufen werden (einmal abspielen und erneut versuchen)',
       toastDownloadFailed: 'Download fehlgeschlagen',
       toastDownloaded: 'Heruntergeladen'
     },
@@ -336,6 +344,7 @@
       toastNoPost: 'Nenhuma postagem encontrada nesta página',
       toastMdSaved: 'Markdown salvo',
       toastNoMedia: 'Nenhuma mídia nesta postagem',
+      toastHlsFailed: 'Não foi possível obter este vídeo (reproduza uma vez e tente novamente)',
       toastDownloadFailed: 'Falha no download',
       toastDownloaded: 'Baixado'
     }
@@ -1469,20 +1478,45 @@
     'div[data-testid="cellInnerDiv"]:has(a[href*="how-twitter-ads-work"])'
   ];
 
-  // Right-column modules ("panel blocks"). Verified against both saved DOMs.
-  // NEW (2026) build: each module is a <section> inside the right <aside>, with
-  // language-independent hooks: the trends list rows carry
-  // data-href*="src=trend_click", the Who-to-follow box has [data-who-to-follow],
-  // and the Subscribe-to-Premium box links to /i/premium_sign_up.
-  // OLD (pre-2026) build: the same modules were keyed by data-testid
-  // ("trend" rows; WhoToFollow / userItem rows; premium-bundle-cta box).
+  // Right-column modules ("panel blocks"). X currently serves the NEW (2026)
+  // and OLD (pre-2026) layouts at random, so every module keeps BOTH hook sets.
+  // NEW build (verified against a saved "首頁 _ X-2.html"):
+  //   • "What's happening" is a bordered card <div> whose direct child is a
+  //     <section role="region"> holding the [data-testid="trend"] rows.
+  //   • "Who to follow" is a bordered card <div> that wraps an
+  //     <aside role="complementary"> holding the [data-testid="UserCell"] rows;
+  //     the heading is a SIBLING of that aside, so we hide the card box itself
+  //     (not just the rows/aside) to remove the title and the empty frame too.
+  //   The old NEW hooks the script used (data-href*="src=trend_click",
+  //   [data-who-to-follow], data-testid="WhoToFollow"/"userItem") do NOT exist in
+  //   this build, which is why these two blocks could not be hidden.
+  // OLD build: modules were keyed by data-href*="src=trend_click",
+  //   [data-who-to-follow], data-testid="WhoToFollow" and data-testid="userItem".
+  // Row selectors are kept as a fallback in case the wrapper nesting shifts.
+  // NOTE: do NOT use 3-level nested :has() here (e.g. div:has(> div:has(> aside
+  // :has(...)))). Some engines reject it, and because every selector of a module
+  // used to share one comma rule, that rejection killed the whole rule (rows and
+  // all). Rules are now isolated per selector AND a JS pass (applyWidgetCards)
+  // hides the actual card element, so these CSS hooks only need to be shallow and
+  // language-independent.
   const WIDGETS = {
     hideWhatsNew: [
+      // Card landmark (trends region) — present in both builds; hides heading +
+      // rows + "show more" together.
+      'section:has([data-testid="trend"])',
+      // Rows (fallback if the landmark match is unreliable for display:none kids).
+      '[data-testid="trend"]',
+      // Legacy build hooks.
       'aside section:has([data-href*="src=trend_click"])',
-      'section:has([data-href*="src=trend_click"])',
-      '[data-testid="trend"]'
+      'section:has([data-href*="src=trend_click"])'
     ],
     hideWhoToFollow: [
+      // Card landmark (Who-to-follow complementary region) — present in both
+      // builds; its <h2> heading sits inside, so hiding it removes the title too.
+      'aside:has([data-testid="UserCell"])',
+      // Rows (fallback).
+      '[data-testid="UserCell"]',
+      // Legacy build hooks.
       'aside section:has([data-who-to-follow])',
       'section:has([data-who-to-follow])',
       '[data-testid="WhoToFollow"]',
@@ -1528,6 +1562,17 @@
 
   function hideStyle() {
     const css = [];
+    // Emit ONE rule per selector. A comma-separated selector list is dropped in
+    // its entirety by the CSS engine if any single selector is invalid (e.g. an
+    // unsupported nested :has()), which silently kills the good selectors too.
+    // Isolating them means a bad selector only disables its own rule.
+    const pushRules = (list) => {
+      (list || []).forEach((s) => {
+        if (s) css.push(s + ' { display: none !important; }');
+      });
+    };
+    // Base class toggled by applyWidgetCards() to hide whole right-column cards.
+    css.push('.xtk-w-hide { display: none !important; }');
 
     const map = {
       hideReply: 'reply',
@@ -1539,18 +1584,17 @@
     };
     Object.keys(map).forEach((setting) => {
       if (!S[setting]) return;
-      const sel = ACTION[map[setting]].concat(LEGACY[map[setting]]).join(', ');
-      css.push(sel + ' { display: none !important; }');
+      pushRules(ACTION[map[setting]].concat(LEGACY[map[setting]]));
     });
 
     Object.keys(CHROME).forEach((setting) => {
       if (!S[setting]) return;
-      css.push(CHROME[setting].join(', ') + ' { display: none !important; }');
+      pushRules(CHROME[setting]);
     });
 
     Object.keys(NAV).forEach((setting) => {
       if (!S[setting]) return;
-      css.push(NAV[setting].join(', ') + ' { display: none !important; }');
+      pushRules(NAV[setting]);
     });
 
     if (S.useLargerCSS) {
@@ -1571,6 +1615,64 @@
     return css.join('\n');
   }
 
+  // Build-agnostic fallback for the right-column module cards. X randomly serves
+  // the new and old layouts, and :has() over display:none descendants is unreliable
+  // across engines, so we hide the real card element with JS. Verified against the
+  // live DOM: each module is a bordered rounded box (border:1px; radius:16px) that
+  // wraps exactly ONE landmark (section[role=region] / aside[role=complementary]);
+  // the rail container wraps all three modules plus the search box and footer. So
+  // we (1) find the nearest landmark, then (2) climb to the outermost ancestor that
+  // still holds only that one landmark and draws a visible border — the card frame.
+  // Stopping at any ancestor with >1 landmark guarantees we never hide the rail.
+  function moduleCardBox(el) {
+    let node = el;
+    let landmark = null;
+    while (node && node !== document.body) {
+      const tag = node.tagName;
+      const role = node.getAttribute && node.getAttribute('role');
+      if ((tag === 'SECTION' && role === 'region') ||
+          (tag === 'ASIDE' && role === 'complementary')) { landmark = node; break; }
+      node = node.parentElement;
+    }
+    if (!landmark) return null;
+    let box = landmark;
+    let p = landmark.parentElement;
+    while (p && p !== document.body) {
+      let landCount;
+      try {
+        landCount = p.querySelectorAll('section[role="region"], aside[role="complementary"]').length;
+      } catch (e) { break; }
+      if (landCount > 1) break; // reached the rail container — keep the last card box
+      let bw = 0;
+      try {
+        const cs = getComputedStyle(p);
+        bw = Math.max(
+          parseFloat(cs.borderTopWidth) || 0, parseFloat(cs.borderBottomWidth) || 0,
+          parseFloat(cs.borderLeftWidth) || 0, parseFloat(cs.borderRightWidth) || 0);
+      } catch (e) { /* leave bw=0 */ }
+      if (bw >= 1) box = p; // bordered single-module wrapper = the visible frame
+      p = p.parentElement;
+    }
+    return box;
+  }
+
+  function applyWidgetCards() {
+    const groups = [
+      { hide: !!S.hideWhatsNew, rows: '[data-testid="trend"], [data-href*="src=trend_click"]' },
+      { hide: !!S.hideWhoToFollow, rows: '[data-testid="UserCell"], [data-testid="userItem"], [data-testid="WhoToFollow"], [data-who-to-follow]' }
+    ];
+    groups.forEach((g) => {
+      let rows;
+      try { rows = document.querySelectorAll(g.rows); } catch (e) { return; }
+      const cards = new Set();
+      rows.forEach((r) => { const c = moduleCardBox(r); if (c) cards.add(c); });
+      cards.forEach((c) => {
+        if (g.hide) c.classList.add('xtk-w-hide');
+        else c.classList.remove('xtk-w-hide');
+      });
+    });
+  }
+
   TK.clean = {
     id: 'clean',
     apply() {
@@ -1582,6 +1684,7 @@
         (document.head || document.documentElement).appendChild(el);
       }
       el.textContent = hideStyle();
+      applyWidgetCards();
     }
   };
 })(window.XTK);
@@ -2068,6 +2171,9 @@
 //   3. Videos  -> the public syndication endpoint, which returns
 //                  mediaDetails[].video_info.variants[] including MP4 URLs.
 //                  The old hard-coded GraphQL query id no longer works (403).
+//                  2026 note: the <video> element's src is a non-downloadable
+//                  MSE blob: (HLS), so videos are resolved through syndication
+//                  from the poster's media id, never from the blob src.
 // ============================================================================
 (function (TK) {
   'use strict';
@@ -2267,9 +2373,14 @@
     });
 
     article.querySelectorAll('video').forEach((v) => {
-      const src = v.currentSrc || v.src || v.getAttribute('src') || '';
+      const rawSrc = v.currentSrc || v.src || v.getAttribute('src') || '';
       const poster = v.getAttribute('poster') || '';
-      const key = TK.X.mediaIdOf(poster) || TK.X.mediaIdOf(src) || poster || src;
+      // 2026 X plays videos through an MSE `blob:` URL (HLS). A blob: src is a
+      // live in-memory stream, NOT a downloadable asset, so only treat an
+      // http(s) src as a direct source; a blob: src must fall through to the
+      // poster + syndication path below, which is what actually yields an mp4.
+      const src = /^https?:/i.test(rawSrc) ? rawSrc : '';
+      const key = TK.X.mediaIdOf(poster) || TK.X.mediaIdOf(rawSrc) || poster || rawSrc;
       if (key && seenVid.has(key)) return;
       if (key) seenVid.add(key);
       const ownerId = ownerIdOf(v, article);
@@ -2377,6 +2488,85 @@
     return new Blob([r]);
   }
 
+  // ------------------------------------------------------ HLS video-only path
+  // When the syndication endpoint cannot resolve a video (a fresh tweet whose
+  // embed result is a TweetTombstone, for example), the media still lives on the
+  // public video CDN as fragmented MP4. The player has already fetched the
+  // manifests, so we read them back from the browser's Resource Timing buffer,
+  // then concatenate the VIDEO track's init segment + media segments into a
+  // single .mp4. X stores audio on a separate track; such amplify videos are
+  // frequently silent, and a video-only mp4 is the correct full result for them
+  // (and the only thing reliably downloadable without a login-state GraphQL call).
+  function absUrl(u, ref) {
+    if (/^https?:/i.test(u)) return u;
+    const m = String(ref).match(/^(https?:\/\/[^/]+)/i);
+    const origin = m ? m[1] : 'https://video.twimg.com';
+    return origin + (u.charAt(0) === '/' ? u : '/' + u);
+  }
+
+  function parseMediaPlaylist(text, ref) {
+    const lines = String(text).split(/\r?\n/);
+    let init = null;
+    const segs = [];
+    for (const raw of lines) {
+      const ln = raw.trim();
+      if (!ln) continue;
+      const map = ln.match(/#EXT-X-MAP:URI="([^"]+)"/i);
+      if (map) { init = absUrl(map[1], ref); continue; }
+      if (ln.charAt(0) === '#') continue;
+      segs.push(absUrl(ln.split(/\s+/)[0], ref));
+    }
+    return { init, segs };
+  }
+
+  function pickVideoPlaylist() {
+    const names = performance.getEntriesByType('resource').map((e) => e.name)
+      .filter((n) => /video\.twimg\.com/.test(n) && /\.m3u8(\?|$)/i.test(n));
+    if (!names.length) return null;
+    // A direct video-track media playlist is best (already points at segments).
+    const vid = names.find((n) => /\/(avc1|vid|vp9|h264|mp4v)\//i.test(n));
+    if (vid) return { kind: 'media', url: vid };
+    // Otherwise take the master playlist and resolve the video rendition from it.
+    const master = names.find((n) => /\/pl\/[^/?]+\.m3u8/i.test(n));
+    return { kind: 'master', url: master || names[0] };
+  }
+
+  async function textOf(url) {
+    const res = await gmFetch(url, { responseType: 'text' });
+    return typeof res.response === 'string' ? res.response : (res.responseText || '');
+  }
+
+  async function blobOf(url) {
+    const res = await gmFetch(url, { responseType: 'blob' });
+    return toBlob(res);
+  }
+
+  async function hlsVideoBlob() {
+    const pick = pickVideoPlaylist();
+    if (!pick) return null;
+    let mediaUrl = pick.url;
+    if (pick.kind === 'master') {
+      const mt = await textOf(mediaUrl);
+      const lines = mt.split(/\r?\n/);
+      for (let i = 0; i < lines.length; i++) {
+        if (/#EXT-X-STREAM-INF/i.test(lines[i])) {
+          for (let j = i + 1; j < lines.length; j++) {
+            const s = lines[j].trim();
+            if (s && s.charAt(0) !== '#') { mediaUrl = absUrl(s, mediaUrl); break; }
+          }
+          break;
+        }
+      }
+    }
+    const text = await textOf(mediaUrl);
+    const { init, segs } = parseMediaPlaylist(text, mediaUrl);
+    const parts = [];
+    if (init) parts.push(await blobOf(init));
+    for (const s of segs) parts.push(await blobOf(s));
+    if (!parts.length) return null;
+    return new Blob(parts, { type: 'video/mp4' });
+  }
+
   // Fetch a single item and return its blob (no download yet).
   async function fetchOne(item) {
     const res = await gmFetch(item.url, { responseType: 'blob' });
@@ -2397,7 +2587,7 @@
   }
 
   async function downloadOne(item, name) {
-    const blob = await fetchOne(item);
+    const blob = item.blob || await fetchOne(item);
     saveBlob(blob, name);
     return { name, blob };
   }
@@ -2440,14 +2630,21 @@
 
     try {
       const collected = collectFromDom(article);
-      let items = collected.images.concat(collected.gifs, collected.videos);
       const resolved = await resolveVideos(info.id, collected.videos);
-      const gifList = collected.gifs;
-      const videoList = resolved;
-      items = collected.images.concat(gifList, videoList).filter((i) => !i.failed);
+      const failedVids = resolved.filter((v) => v.failed);
+
+      // Videos the syndication endpoint could not resolve (e.g. a fresh tweet
+      // returning TweetTombstone) fall back to the public HLS video-only path.
+      let hlsItems = [];
+      for (const fv of failedVids) {
+        const blob = await hlsVideoBlob();
+        if (blob) hlsItems.push({ blob, ext: 'mp4', typeLabel: 'video' });
+      }
+
+      let items = collected.images.concat(collected.gifs, resolved.filter((i) => !i.failed), hlsItems);
 
       if (!items.length) {
-        TK.toast(TK.t('toastNoMedia'), 'error');
+        TK.toast(TK.t(failedVids.length ? 'toastHlsFailed' : 'toastNoMedia'), 'error');
         btn.dataset.state = 'error';
         return;
       }
@@ -2921,3 +3118,4 @@
     boot();
   }
 })(window.XTK);
+
