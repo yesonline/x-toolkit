@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.3.3.4
+// @version      1.3.3.5
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -1455,10 +1455,12 @@
   // on the sponsored destination link (in the saved DOM twclid appeared only on
   // the ad's external link, never on organic posts), so hide the whole cell.
   //
-  // OLD (pre-2026) build: ads are wrapped in a dedicated placement-tracking
-  // container (verified: 10 real occurrences of [data-testid="placementTracking"]
-  // in the saved old DOM), and the ad cell also carries the "About these ads"
-  // help link.
+  // OLD (pre-2026) build: the ad cell also carries the "About these ads" help
+  // link (how-twitter-ads-work) and the twclid param, so it is covered above.
+  // Do NOT use [data-testid="placementTracking"] as an ad marker: it is a generic
+  // impression-tracking wrapper that also surrounds ordinary (non-ad) tweets and
+  // video players (verified live: a normal video tweet's player sits inside a
+  // placementTracking div), so hiding it muted videos (audio but no picture).
   //
   // A bare `div:has(...)` is never used — it would match the timeline root and
   // hide every post.
@@ -1474,7 +1476,9 @@
     'article:has(a[href*="twclid"])',
     'li:has(path[d^="M21 5.61a10"])',
     'article:has(path[d^="M21 5.61a10"])',
-    '[data-testid="placementTracking"]',
+    // NOTE: do NOT hide [data-testid="placementTracking"] — it is X's generic
+    // impression-tracking wrapper and also wraps ordinary (non-ad) tweets,
+    // including video players; hiding it muted videos (audio but no picture).
     'div[data-testid="cellInnerDiv"]:has(a[href*="how-twitter-ads-work"])'
   ];
 
