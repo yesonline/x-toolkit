@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| 版本 Version | `1.3.3.4` |
+| 版本 Version | `1.3.3.5` |
 | 授權 License | [MIT](LICENSE) |
 | 适用 Matches | `https://x.com/*`, `https://twitter.com/*` |
 | 管理員 Manager | Tampermonkey / Violentmonkey / Greasemonkey |
