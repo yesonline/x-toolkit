@@ -4,7 +4,7 @@
 // @supportURL   https://github.com/yesonline/x-toolkit/issues
 // @downloadURL  https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
 // @updateURL    https://raw.githubusercontent.com/yesonline/x-toolkit/main/x-toolkit.user.js
-// @version      1.3.3.5
+// @version      1.3.4
 // @description  All-in-one X/Twitter toolkit rebuilt for the 2026 X DOM: cleaner UI, thread reader, one-click block, emoji fix, media downloader and Markdown export.
 // @author       YesOnline
 // @license      MIT
@@ -56,7 +56,7 @@
       hideHome: 'Hide Home', hideChat: 'Hide Chat', hideProfile: 'Hide Profile',
       hideother: 'Hide Ads / Business', hideAds: 'Hide Ads in Timeline', hideMutedNotices: 'Hide Muted Notices', hideRightColumn: 'Hide Right Sidebar',
       hideChatButton: 'Hide Floating Chat', hideCreatorsStudio: 'Hide Creator Studio',
-      widgets: 'Right-Column Modules', hidePremiumModule: 'Hide Premium Module', hideWhatsNew: "Hide What's New", hideWhoToFollow: 'Hide Who to Follow',
+      widgets: 'Right-Column Modules', hidePremiumModule: 'Hide Premium Module', hideWhatsNew: "Hide What's New", hideWhoToFollow: 'Hide Who to Follow', hideGrokBot: 'Hide Grok Bot Promo',
       useLargerCSS: 'Wider Post Area', cssWidth: 'Width (px)', useCustomPadding: 'Right Sidebar Spacing',
       paddingWidth: 'Padding (px)', filename: 'Filename format', postTime: 'Date/time format',
       sync: 'Sync history via bookmarks', zip: 'Bundle multiple media into a ZIP',
@@ -90,7 +90,7 @@
       hideHome: '隱藏 首頁', hideChat: '隱藏 聊天', hideProfile: '隱藏 個人資料',
       hideother: '隱藏 廣告/商家', hideAds: '隱藏 業配廣告', hideMutedNotices: '隱藏 靜音通知', hideRightColumn: '隱藏 右側邊欄',
       hideChatButton: '隱藏 懸浮聊天', hideCreatorsStudio: '隱藏 創作者工作室',
-      widgets: '右欄模組', hidePremiumModule: '隱藏 訂閱 Premium', hideWhatsNew: '隱藏 有什麼新鮮事', hideWhoToFollow: '隱藏 跟隨誰',
+      widgets: '右欄模組', hidePremiumModule: '隱藏 訂閱 Premium', hideWhatsNew: '隱藏 有什麼新鮮事', hideWhoToFollow: '隱藏 跟隨誰', hideGrokBot: '隱藏 Grok Bot 推廣',
       useLargerCSS: '更寬的貼文區', cssWidth: '寬度 (px)', useCustomPadding: '右側邊欄間距',
       paddingWidth: '間距 (px)', filename: '檔名格式', postTime: '日期格式',
       sync: '以書籤同步紀錄', zip: '多媒體打包成 ZIP',
@@ -124,7 +124,7 @@
       hideHome: '隐藏 首页', hideChat: '隐藏 聊天', hideProfile: '隐藏 个人资料',
       hideother: '隐藏 广告/商家', hideAds: '隐藏 推广广告', hideMutedNotices: '隐藏 静音通知', hideRightColumn: '隐藏 右侧边栏',
       hideChatButton: '隐藏 悬浮聊天', hideCreatorsStudio: '隐藏 创作者工作室',
-      widgets: '右栏模块', hidePremiumModule: '隐藏 订阅 Premium', hideWhatsNew: '隐藏 有什么新鲜事', hideWhoToFollow: '隐藏 关注谁',
+      widgets: '右栏模块', hidePremiumModule: '隐藏 订阅 Premium', hideWhatsNew: '隐藏 有什么新鲜事', hideWhoToFollow: '隐藏 关注谁', hideGrokBot: '隐藏 Grok Bot 推广',
       useLargerCSS: '更宽的帖子区', cssWidth: '宽度 (px)', useCustomPadding: '右侧边栏间距',
       paddingWidth: '间距 (px)', filename: '文件名格式', postTime: '日期格式',
       sync: '通过书签同步记录', zip: '多媒体打包为 ZIP',
@@ -158,7 +158,7 @@
       hideHome: 'ホームを非表示', hideChat: 'チャットを非表示', hideProfile: 'プロフィールを非表示',
       hideother: '広告/feoを非表示', hideAds: '広告投稿を非表示', hideMutedNotices: 'ミュート通知を非表示', hideRightColumn: '右サイドバーを非表示',
       hideChatButton: 'フローティングチャットを非表示', hideCreatorsStudio: 'クリエイタースタジオを非表示',
-      widgets: '右カラムモジュール', hidePremiumModule: 'Premium登録を非表示', hideWhatsNew: 'トレンドを非表示', hideWhoToFollow: 'おすすめユーザーを非表示',
+      widgets: '右カラムモジュール', hidePremiumModule: 'Premium登録を非表示', hideWhatsNew: 'トレンドを非表示', hideWhoToFollow: 'おすすめユーザーを非表示', hideGrokBot: 'Grok Bot プロモを非表示',
       useLargerCSS: '投稿エリアを拡大', cssWidth: '幅 (px)', useCustomPadding: '右サイドバーの間隔',
       paddingWidth: '間隔 (px)', filename: 'ファイル名形式', postTime: '日時形式',
       sync: 'ブックマークで履歴を同期', zip: '複数メディアを ZIP に',
@@ -192,7 +192,7 @@
       hideHome: '홈 숨기기', hideChat: '채팅 숨기기', hideProfile: '프로필 숨기기',
       hideother: '광고/비즈니스 숨기기', hideAds: '광고 게시물 숨기기', hideMutedNotices: '뮤트 알림 숨기기', hideRightColumn: '오른쪽 사이드바 숨기기',
       hideChatButton: '플로팅 채팅 숨기기', hideCreatorsStudio: '크리에이터 스튜디오 숨기기',
-      widgets: '오른쪽 컬럼 모듈', hidePremiumModule: 'Premium 가입 숨기기', hideWhatsNew: '새 소식 숨기기', hideWhoToFollow: '팔로우 추천 숨기기',
+      widgets: '오른쪽 컬럼 모듈', hidePremiumModule: 'Premium 가입 숨기기', hideWhatsNew: '새 소식 숨기기', hideWhoToFollow: '팔로우 추천 숨기기', hideGrokBot: 'Grok Bot 프로모션 숨기기',
       useLargerCSS: '넓은 게시물 영역', cssWidth: '너비 (px)', useCustomPadding: '오른쪽 사이드바 간격',
       paddingWidth: '간격 (px)', filename: '파일명 형식', postTime: '날짜/시간 형식',
       sync: '북마크로 기록 동기화', zip: '여러 미디어를 ZIP으로 묶기',
@@ -226,7 +226,7 @@
       hideHome: 'Ocultar inicio', hideChat: 'Ocultar chats', hideProfile: 'Ocultar perfil',
       hideother: 'Ocultar anuncios / empresas', hideAds: 'Ocultar anuncios', hideMutedNotices: 'Ocultar avisos de silenciados', hideRightColumn: 'Ocultar barra derecha',
       hideChatButton: 'Ocultar chat flotante', hideCreatorsStudio: 'Ocultar Creator Studio',
-      widgets: 'Módulos de la columna derecha', hidePremiumModule: 'Ocultar módulo Premium', hideWhatsNew: 'Ocultar Novedades', hideWhoToFollow: 'Ocultar A quién seguir',
+      widgets: 'Módulos de la columna derecha', hidePremiumModule: 'Ocultar módulo Premium', hideWhatsNew: 'Ocultar Novedades', hideWhoToFollow: 'Ocultar A quién seguir', hideGrokBot: 'Ocultar promo de Grok Bot',
       useLargerCSS: 'Área de publicaciones más ancha', cssWidth: 'Ancho (px)', useCustomPadding: 'Espaciado de la barra derecha',
       paddingWidth: 'Espaciado (px)', filename: 'Formato del nombre de archivo', postTime: 'Formato de fecha/hora',
       sync: 'Sincronizar historial con marcadores', zip: 'Agrupar varios medios en un ZIP',
@@ -260,7 +260,7 @@
       hideHome: 'Masquer l’accueil', hideChat: 'Masquer les discussions', hideProfile: 'Masquer le profil',
       hideother: 'Masquer les pubs / entreprises', hideAds: 'Masquer les publicités', hideMutedNotices: 'Masquer les avis de comptes muets', hideRightColumn: 'Masquer la colonne de droite',
       hideChatButton: 'Masquer le chat flottant', hideCreatorsStudio: 'Masquer Creator Studio',
-      widgets: 'Modules de la colonne de droite', hidePremiumModule: 'Masquer le module Premium', hideWhatsNew: 'Masquer les nouveautés', hideWhoToFollow: 'Masquer Qui suivre',
+      widgets: 'Modules de la colonne de droite', hidePremiumModule: 'Masquer le module Premium', hideWhatsNew: 'Masquer les nouveautés', hideWhoToFollow: 'Masquer Qui suivre', hideGrokBot: 'Masquer la promo Grok Bot',
       useLargerCSS: 'Zone de publication plus large', cssWidth: 'Largeur (px)', useCustomPadding: 'Espacement de la colonne de droite',
       paddingWidth: 'Espacement (px)', filename: 'Format du nom de fichier', postTime: 'Format date/heure',
       sync: 'Synchroniser l’historique via les favoris', zip: 'Regrouper plusieurs médias dans un ZIP',
@@ -294,7 +294,7 @@
       hideHome: 'Startseite ausblenden', hideChat: 'Chats ausblenden', hideProfile: 'Profil ausblenden',
       hideother: 'Anzeigen / Unternehmen ausblenden', hideAds: 'Anzeigen im Feed ausblenden', hideMutedNotices: 'Hinweise stummer Konten ausblenden', hideRightColumn: 'Rechte Spalte ausblenden',
       hideChatButton: 'Schwebenden Chat ausblenden', hideCreatorsStudio: 'Creator Studio ausblenden',
-      widgets: 'Module der rechten Spalte', hidePremiumModule: 'Premium-Modul ausblenden', hideWhatsNew: 'Neuigkeiten ausblenden', hideWhoToFollow: 'Empfohlene Accounts ausblenden',
+      widgets: 'Module der rechten Spalte', hidePremiumModule: 'Premium-Modul ausblenden', hideWhatsNew: 'Neuigkeiten ausblenden', hideWhoToFollow: 'Empfohlene Accounts ausblenden', hideGrokBot: 'Grok Bot-Promo ausblenden',
       useLargerCSS: 'Breiterer Post-Bereich', cssWidth: 'Breite (px)', useCustomPadding: 'Abstand der rechten Spalte',
       paddingWidth: 'Abstand (px)', filename: 'Dateinamensformat', postTime: 'Datums-/Zeitformat',
       sync: 'Verlauf über Lesezeichen synchronisieren', zip: 'Mehrere Medien in ein ZIP bündeln',
@@ -328,7 +328,7 @@
       hideHome: 'Ocultar início', hideChat: 'Ocultar conversas', hideProfile: 'Ocultar perfil',
       hideother: 'Ocultar anúncios / empresas', hideAds: 'Ocultar anúncios', hideMutedNotices: 'Ocultar avisos de silenciados', hideRightColumn: 'Ocultar barra direita',
       hideChatButton: 'Ocultar chat flutuante', hideCreatorsStudio: 'Ocultar Creator Studio',
-      widgets: 'Módulos da coluna direita', hidePremiumModule: 'Ocultar módulo Premium', hideWhatsNew: 'Ocultar Novidades', hideWhoToFollow: 'Ocultar Quem seguir',
+      widgets: 'Módulos da coluna direita', hidePremiumModule: 'Ocultar módulo Premium', hideWhatsNew: 'Ocultar Novidades', hideWhoToFollow: 'Ocultar Quem seguir', hideGrokBot: 'Ocultar promo do Grok Bot',
       useLargerCSS: 'Área de postagens mais larga', cssWidth: 'Largura (px)', useCustomPadding: 'Espaçamento da barra direita',
       paddingWidth: 'Espaçamento (px)', filename: 'Formato do nome do arquivo', postTime: 'Formato de data/hora',
       sync: 'Sincronizar histórico por salvos', zip: 'Agrupar várias mídias em ZIP',
@@ -477,7 +477,7 @@
     hideHome: false, hideChat: false, hideProfile: false,
     hideCommunities: false, hideCalls: false, hideHistory: false, hideMutedNotices: false, hideRightColumn: false, hideChatButton: false,
     hideCreatorsStudio: false, useLargerCSS: false, cssWidth: 680, useCustomPadding: false, paddingWidth: 20,
-    hideWhatsNew: true, hideWhoToFollow: true, hidePremiumModule: true,
+    hideWhatsNew: true, hideWhoToFollow: true, hidePremiumModule: true, hideGrokBot: true,
     // media downloader
     mdFilenameFormat: '{userId}-{postId}-{mediaType}{index}',
     mdPostTimeFormat: 'YYYYMMDD_HHmmss',
@@ -1088,7 +1088,7 @@
   const CHECKS = [
     { group: 'tweetBtns', items: ['hideReply', 'hideRetweet', 'hideLike', 'hideBookmark', 'hideViews', 'hideShare'] },
     { group: 'sidebar', items: ['hideHome', 'hideExplore', 'hideNotifications', 'hideChat', 'hideCalls', 'hideGrok', 'hideHistory', 'hideCreatorsStudio', 'hidePremiumSignUp', 'hideProfile', 'hideBookmarks', 'hideCommunities', 'hideVerifiedOrgs', 'hideother', 'hideAds', 'hideMutedNotices', 'hideRightColumn', 'hideChatButton'] },
-    { group: 'widgets', items: ['hideWhatsNew', 'hideWhoToFollow', 'hidePremiumModule'] },
+    { group: 'widgets', items: ['hideWhatsNew', 'hideWhoToFollow', 'hidePremiumModule', 'hideGrokBot'] },
     { group: 'layout', items: ['useLargerCSS', 'useCustomPadding'] }
   ];
 
@@ -1372,6 +1372,17 @@
     '[data-testid="GrokDrawer"]'
   ];
 
+  // "Get Grok Bot with X Premium" promotional card (verified in saved DOM:
+  // <div aria-label="透過 X Premium 取得 Grok Bot" role="complementary">). The
+  // aria-label keeps the brand token "Grok" untranslated in every locale, so
+  // [aria-label*="Grok"] matches regardless of UI language; role="complementary"
+  // scopes it to this landmark card and never touches the sidebar Grok nav item
+  // (an <a>/<button>) or the dock launcher (handled by the GROK rules above).
+  // This is its own toggle under "Right-Column Modules" (hideGrokBot).
+  const GROKBOT = [
+    'div[role="complementary"][aria-label*="Grok"]'
+  ];
+
   // Left-rail destinations. Each entry lists BOTH the 2026 anchors
   // ([class*="sidebar-item"] + ends-with href) AND the older pre-2026 build's
   // data-testid="AppTabBar_*_Link" hooks, so hiding works on either version
@@ -1541,6 +1552,7 @@
     hideWhatsNew: WIDGETS.hideWhatsNew,
     hideWhoToFollow: WIDGETS.hideWhoToFollow,
     hidePremiumModule: WIDGETS.hidePremiumModule,
+    hideGrokBot: GROKBOT,
     hidePremiumSignUp: UPSELL,
     hideVerifiedOrgs: ['a[href*="verified-orgs-signup"]', '[data-icon="icon-verified-orgs"]'],
     hideother: ['a[href*="/i/ads"]', 'a[href*="ads.twitter.com"]', 'a[href*="ads.x.com"]'],
